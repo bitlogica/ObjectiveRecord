@@ -43,34 +43,34 @@
 
 #pragma mark - Finders
 
-+ (NSArray *)all {
-    return [self allInContext:[NSManagedObjectContext defaultContext]];
++ (NSArray *)allObjc {
+    return [self allInContextObjc:[NSManagedObjectContext defaultContext]];
 }
 
-+ (NSArray *)allWithOrder:(id)order {
-    return [self allInContext:[NSManagedObjectContext defaultContext] order:order];
++ (NSArray *)allWithOrderObjc:(id)order {
+    return [self allInContextObjc:[NSManagedObjectContext defaultContext] order:order];
 }
 
-+ (NSArray *)allInContext:(NSManagedObjectContext *)context {
-    return [self allInContext:context order:nil];
++ (NSArray *)allInContextObjc:(NSManagedObjectContext *)context {
+    return [self allInContextObjc:context order:nil];
 }
 
-+ (NSArray *)allInContext:(NSManagedObjectContext *)context order:(id)order {
-    return [self fetchWithCondition:nil inContext:context withOrder:order fetchLimit:nil];
++ (NSArray *)allInContextObjc:(NSManagedObjectContext *)context order:(id)order {
+    return [self fetchWithConditionObjc:nil inContext:context withOrder:order fetchLimit:nil];
 }
 
-+ (instancetype)findOrCreate:(NSDictionary *)properties {
-    return [self findOrCreate:properties inContext:[NSManagedObjectContext defaultContext]];
++ (instancetype)findOrCreateObjc:(NSDictionary *)properties {
+    return [self findOrCreateObjc:properties inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (instancetype)findOrCreate:(NSDictionary *)properties inContext:(NSManagedObjectContext *)context {
++ (instancetype)findOrCreateObjc:(NSDictionary *)properties inContext:(NSManagedObjectContext *)context {
     NSDictionary *transformed = [[self class] transformProperties:properties withObject:nil context:context];
 
-    NSManagedObject *existing = [self where:transformed inContext:context].first;
+    NSManagedObject *existing = [self whereObjc:transformed inContext:context].first;
     return existing ?: [self create:transformed inContext:context];
 }
 
-+ (instancetype)find:(id)condition, ... {
++ (instancetype)findObjc:(id)condition, ... {
     va_list va_arguments;
     va_start(va_arguments, condition);
     NSPredicate *predicate = [self predicateFromObject:condition arguments:va_arguments];
@@ -79,45 +79,45 @@
     return [self find:predicate inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (instancetype)find:(id)condition inContext:(NSManagedObjectContext *)context {
-    return [self where:condition inContext:context limit:@1].first;
++ (instancetype)findObjc:(id)condition inContext:(NSManagedObjectContext *)context {
+    return [self whereObjc:condition inContext:context limit:@1].first;
 }
 
-+ (NSArray *)where:(id)condition, ... {
++ (NSArray *)whereObjc:(id)condition, ... {
     va_list va_arguments;
     va_start(va_arguments, condition);
     NSPredicate *predicate = [self predicateFromObject:condition arguments:va_arguments];
     va_end(va_arguments);
 
-    return [self where:predicate inContext:[NSManagedObjectContext defaultContext]];
+    return [self whereObjc:predicate inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (NSArray *)where:(id)condition order:(id)order {
-    return [self where:condition inContext:[NSManagedObjectContext defaultContext] order:order];
++ (NSArray *)whereObjc:(id)condition order:(id)order {
+    return [self whereObjc:condition inContext:[NSManagedObjectContext defaultContext] order:order];
 }
 
-+ (NSArray *)where:(id)condition limit:(NSNumber *)limit {
-    return [self where:condition inContext:[NSManagedObjectContext defaultContext] limit:limit];
++ (NSArray *)whereObjc:(id)condition limit:(NSNumber *)limit {
+    return [self whereObjc:condition inContext:[NSManagedObjectContext defaultContext] limit:limit];
 }
 
-+ (NSArray *)where:(id)condition order:(id)order limit:(NSNumber *)limit {
-    return [self where:condition inContext:[NSManagedObjectContext defaultContext] order:order limit:limit];
++ (NSArray *)whereObjc:(id)condition order:(id)order limit:(NSNumber *)limit {
+    return [self whereObjc:condition inContext:[NSManagedObjectContext defaultContext] order:order limit:limit];
 }
 
-+ (NSArray *)where:(id)condition inContext:(NSManagedObjectContext *)context {
-    return [self where:condition inContext:context order:nil limit:nil];
++ (NSArray *)whereObjc:(id)condition inContext:(NSManagedObjectContext *)context {
+    return [self whereObjc:condition inContext:context order:nil limit:nil];
 }
 
-+ (NSArray *)where:(id)condition inContext:(NSManagedObjectContext *)context order:(id)order {
-    return [self where:condition inContext:context order:order limit:nil];
++ (NSArray *)whereObjc:(id)condition inContext:(NSManagedObjectContext *)context order:(id)order {
+    return [self whereObjc:condition inContext:context order:order limit:nil];
 }
 
-+ (NSArray *)where:(id)condition inContext:(NSManagedObjectContext *)context limit:(NSNumber *)limit {
-    return [self where:condition inContext:context order:nil limit:limit];
++ (NSArray *)whereObjc:(id)condition inContext:(NSManagedObjectContext *)context limit:(NSNumber *)limit {
+    return [self whereObjc:condition inContext:context order:nil limit:limit];
 }
 
-+ (NSArray *)where:(id)condition inContext:(NSManagedObjectContext *)context order:(id)order limit:(NSNumber *)limit {
-    return [self fetchWithCondition:condition inContext:context withOrder:order fetchLimit:limit];
++ (NSArray *)whereObjc:(id)condition inContext:(NSManagedObjectContext *)context order:(id)order limit:(NSNumber *)limit {
+    return [self fetchWithConditionObjcObjc:condition inContext:context withOrder:order fetchLimit:limit];
 }
 
 #pragma mark - Aggregation
@@ -147,15 +147,15 @@
 
 #pragma mark - Creation / Deletion
 
-+ (id)create {
++ (id)createObjc {
     return [self createInContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (id)create:(NSDictionary *)attributes {
++ (id)createObjc:(NSDictionary *)attributes {
     return [self create:attributes inContext:[NSManagedObjectContext defaultContext]];
 }
 
-+ (id)create:(NSDictionary *)attributes inContext:(NSManagedObjectContext *)context {
++ (id)createObjc:(NSDictionary *)attributes inContext:(NSManagedObjectContext *)context {
     unless([attributes exists]) return nil;
 
     NSManagedObject *newEntity = [self createInContext:context];
@@ -164,7 +164,7 @@
     return newEntity;
 }
 
-+ (id)createInContext:(NSManagedObjectContext *)context {
++ (id)createObjcInContext:(NSManagedObjectContext *)context {
     return [NSEntityDescription insertNewObjectForEntityForName:[self entityName]
                                          inManagedObjectContext:context];
 }
@@ -190,11 +190,11 @@
 }
 
 + (void)deleteAll {
-    [self deleteAllInContext:[NSManagedObjectContext defaultContext]];
+    [self deleteallInContextObjc:[NSManagedObjectContext defaultContext]];
 }
 
-+ (void)deleteAllInContext:(NSManagedObjectContext *)context {
-    [[self allInContext:context] each:^(id object) {
++ (void)deleteallInContextObjc:(NSManagedObjectContext *)context {
+    [[self allInContextObjc:context] each:^(id object) {
         [object delete];
     }];
 }
@@ -302,7 +302,7 @@
     return @[[self sortDescriptorFromObject:order]];
 }
 
-+ (NSFetchRequest *)createFetchRequestInContext:(NSManagedObjectContext *)context {
++ (NSFetchRequest *)createObjcFetchRequestInContext:(NSManagedObjectContext *)context {
     NSFetchRequest *request = [NSFetchRequest new];
     NSEntityDescription *entity = [NSEntityDescription entityForName:[self entityName]
                                               inManagedObjectContext:context];
@@ -310,7 +310,7 @@
     return request;
 }
 
-+ (NSArray *)fetchWithCondition:(id)condition
++ (NSArray *)fetchWithConditionObjc:(id)condition
                       inContext:(NSManagedObjectContext *)context
                       withOrder:(id)order
                      fetchLimit:(NSNumber *)fetchLimit {
